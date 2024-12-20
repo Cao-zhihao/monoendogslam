@@ -1,7 +1,7 @@
 import os
 
 scenes = [
-    "cecum_t1_b", 
+    "sim01fix", 
     "cecum_t2_b", 
     "cecum_t3_a", 
     "sigmoid_t1_a", 
@@ -10,7 +10,9 @@ scenes = [
     "trans_t1_b", 
     "trans_t2_c", 
     "trans_t4_a", 
-    "trans_t4_b"
+    "trans_t4_b",
+    "endomapper_seq01",
+    "sim02(slow)"
 ]
 
 primary_device="cuda:0"
@@ -37,8 +39,8 @@ config = dict(
     map_every=map_every, # Mapping every nth frame
     keyframe_every=keyframe_every, # Keyframe every nth frame
     distance_keyframe_selection=True, # Use Naive Keyframe Selection
-    distance_current_frame_prob=0.1, # Probability of choosing the current frame in mapping optimization
-    mapping_window_size=-1, # Mapping window size
+    distance_current_frame_prob=0.2, # Probability of choosing the current frame in mapping optimization
+    mapping_window_size=50, # Mapping window size
     report_global_progress_every=2000, # Report Global Progress every nth frame
     scene_radius_depth_ratio=3, # Max First Frame Depth to Scene Radius Ratio (For Pruning/Densification)
     mean_sq_dist_method="projective", # ["projective", "knn"] (Type of Mean Squared Distance Calculation for Scale of Gaussians)
@@ -60,7 +62,7 @@ config = dict(
         train_or_test="train",
     ),
     tracking=dict(
-        use_gt_poses=False, # Use GT Poses for Tracking
+        use_gt_poses=True, # Use GT Poses for Tracking
         forward_prop=True, # Forward Propagate Poses
         num_iters=tracking_iters,
         use_sil_for_loss=True,
@@ -84,7 +86,7 @@ config = dict(
     mapping=dict(
         num_iters=mapping_iters,
         add_new_gaussians=True,
-        sil_thres=0.5, # For Addition of new Gaussians
+        sil_thres=1.0, # For Addition of new Gaussians
         use_l1=True,
         use_sil_for_loss=False,
         ignore_outlier_depth_loss=False,
@@ -93,10 +95,10 @@ config = dict(
             depth=1.0,
         ),
         lrs=dict(
-            means3D=0.0001,
-            rgb_colors=0.0025,
+            means3D=0.0005,
+            rgb_colors=0.005,
             unnorm_rotations=0.001,
-            logit_opacities=0.05,
+            logit_opacities=0.1,
             log_scales=0.001,
             cam_unnorm_rots=0.000,
             cam_trans=0.000,
@@ -133,7 +135,7 @@ config = dict(
         viz_w=320, viz_h=320,
         viz_near=0.01, viz_far=100.0,
         view_scale=2,
-        viz_fps=30, # FPS for Online Recon Viz
+        viz_fps=60, # FPS for Online Recon Viz
         enter_interactive_post_online=True, # Enter Interactive Mode after Online Recon Viz
         gaussian_simplification=False,
     ),

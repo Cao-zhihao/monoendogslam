@@ -91,46 +91,45 @@ def keyframe_selection_overlap(gt_depth, w2c, intrinsics, keyframe_list, k, pixe
     return selected_keyframe_list
     
     
-def keyframe_selection_distance(time_idx, curr_position, keyframe_list, distance_current_frame_prob, n_samples):
+def keyframe_selection_distance(
+    time_idx, curr_position, prev_position, keyframe_list, 
+    distance_current_frame_prob, n_samples):
     """
-    Performs sampling based on a probability distribution and returns 
-    the indices of `n_samples` selected keyframes.
-
-    Args:
-        probabilities: A list of probabilities representing the 
-            likelihood of selecting each keyframe.
-        n_samples: The number of keyframes to be sampled.
-
-    Returns:
-        A list of `n_samples` indices of the selected keyframes.
+    选择关键帧，并根据距离、时间和运动方向计算概率。
     """
     distances = []
     time_laps = []
-    curr_shift = np.linalg.norm(curr_position)
+    curr_shift = torch.norm(curr_position - prev_position).item()
+
     for keyframe in keyframe_list:
-        est_w2c = keyframe['est_w2c'].detach().cpu()
+        est_w2c = keyframe['est_w2c'].detach().cpu().numpy()
         camera_position = est_w2c[:3, 3]
-        distance = np.linalg.norm(camera_position - curr_position)
+
+        # 将 camera_position 转换为 Tensor
+        camera_position_tensor = torch.from_numpy(camera_position).to(curr_position.device)
+        
+        # 计算当前帧与关键帧之间的距离
+        distance = torch.norm(camera_position_tensor - curr_position).item()
         time_lap = time_idx - keyframe['id']
+
         distances.append(distance)
         time_laps.append(time_lap)
 
-    dis2prob = lambda x, scaler: np.log2(1 + scaler/(x+scaler/5))
-    dis_prob = [dis2prob(d, curr_shift)+dis2prob(t, time_idx) for d, t in zip(distances, time_laps)]
-    sum_prob = sum(dis_prob) / (1-distance_current_frame_prob) # distance_current_frame_prob： p_c
-    norm_dis_prob = [p/sum_prob for p in dis_prob]
-    norm_dis_prob.append(distance_current_frame_prob) # index 'len(keyframe_list)' indicate the current frame
-    # Compute the cumulative distribution function (CDF).
-    cdf = np.cumsum(norm_dis_prob)
-    # Generate random samples.
-    samples = np.random.rand(n_samples)
-    # Select indices by comparing random numbers with CDF.
-    sample_indices = np.searchsorted(cdf, samples)
+    # 使用距离和时间计算概率
+    dis2prob = lambda x, scaler: np.log2(1 + scaler / (x + scaler / 5))
+    dis_prob = [
+        dis2prob(d, curr_shift) + dis2prob(t, time_idx) 
+        for d, t in zip(distances, time_laps)
+    ]
     
-    # no sampling ablation
-    # sample_indices = []
-    # for i in range(n_samples):
-    #     # sample = np.random.randint(0, len(keyframe_list))
-    #     sample_indices.append(len(keyframe_list))
-        
+    sum_prob = sum(dis_prob) / (1 - distance_current_frame_prob)
+    norm_dis_prob = [p / sum_prob for p in dis_prob]
+    norm_dis_prob.append(distance_current_frame_prob)
+
+    # 计算 CDF 并采样
+    cdf = np.cumsum(norm_dis_prob)
+    samples = np.random.rand(n_samples)
+    sample_indices = np.searchsorted(cdf, samples)
+
     return sample_indices
+

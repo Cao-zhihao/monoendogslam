@@ -1,0 +1,360 @@
+Collecting git+https://github.com/JonathonLuiten/diff-gaussian-rasterization-w-depth/ (from -r requirements.txt (line 18))
+  Cloning https://github.com/JonathonLuiten/diff-gaussian-rasterization-w-depth/ to /tmp/pip-req-build-4_cpp90m
+  Running command git clone --filter=blob:none --quiet https://github.com/JonathonLuiten/diff-gaussian-rasterization-w-depth/ /tmp/pip-req-build-4_cpp90m
+  Resolved https://github.com/JonathonLuiten/diff-gaussian-rasterization-w-depth/ to commit cb65e4b86bc3bd8ed42174b72a62e8d3a3a71110
+  Running command git submodule update --init --recursive -q
+  Preparing metadata (setup.py) ... error
+  error: subprocess-exited-with-error
+  
+  × python setup.py egg_info did not run successfully.
+  │ exit code: 1
+  ╰─> [6 lines of output]
+      Traceback (most recent call last):
+        File "<string>", line 2, in <module>
+        File "<pip-setuptools-caller>", line 34, in <module>
+        File "/tmp/pip-req-build-4_cpp90m/setup.py", line 13, in <module>
+          from torch.utils.cpp_extension import CUDAExtension, BuildExtension
+      ModuleNotFoundError: No module named 'torch'
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: metadata-generation-failed
+
+× Encountered error while generating package metadata.
+╰─> See above for output.
+
+note: This is an issue with the package mentioned above, not pip.
+hint: See above for details.
+
+conda create -n endogslam python=3.10 # recommended
+conda activate endogslam
+# torch and cuda version according to your env and device
+pip install torch==1.13.1 torchvision==0.14.1 torchaudio==0.13.1 --extra-index-url https://download.pytorch.org/whl/cu118
+pip install -r requirements.txt
+
+
+  Cloning https://github.com/JonathonLuiten/diff-gaussian-rasterization-w-depth/ to /tmp/pip-req-build-cryy43ys
+  Running command git clone --filter=blob:none --quiet https://github.com/JonathonLuiten/diff-gaussian-rasterization-w-depth/ /tmp/pip-req-build-cryy43ys
+  Resolved https://github.com/JonathonLuiten/diff-gaussian-rasterization-w-depth/ to commit cb65e4b86bc3bd8ed42174b72a62e8d3a3a71110
+  Running command git submodule update --init --recursive -q
+  Preparing metadata (setup.py) ... done
+Collecting tqdm==4.65.0 (from -r requirements.txt (line 1))
+  Downloading tqdm-4.65.0-py3-none-any.whl.metadata (56 kB)
+Collecting numpy==1.21.5 (from -r requirements.txt (line 2))
+  Downloading numpy-1.21.5-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (2.1 kB)
+Collecting Pillow==9.2.0 (from -r requirements.txt (line 3))
+  Downloading Pillow-9.2.0-cp310-cp310-manylinux_2_28_x86_64.whl.metadata (8.9 kB)
+ERROR: Ignored the following yanked versions: 3.4.11.39, 3.4.17.61, 4.4.0.42, 4.4.0.44, 4.5.4.58, 4.5.5.62, 4.7.0.68
+ERROR: Could not find a version that satisfies the requirement opencv-python==4.9.0 (from versions: 3.4.0.14, 3.4.10.37, 3.4.11.41, 3.4.11.43, 3.4.11.45, 3.4.13.47, 3.4.15.55, 3.4.16.57, 3.4.16.59, 3.4.17.63, 3.4.18.65, 4.3.0.38, 4.4.0.40, 4.4.0.46, 4.5.1.48, 4.5.3.56, 4.5.4.60, 4.5.5.64, 4.6.0.66, 4.7.0.72, 4.8.0.74, 4.8.0.76, 4.8.1.78, 4.9.0.80, 4.10.0.82, 4.10.0.84)
+ERROR: No matching distribution found for opencv-python==4.9.0
+
+
+
+python scripts/calc_metrics.py --gt data/C3VD/sigmoid_t3_a --render experiments/C3VD_base/sigmoid_t3_a --test_single
+
+
+
+
+
+
+
+
+
+
+Setting up [LPIPS] perceptual loss: trunk [alex], v[0.1], spatial [off]
+/home/czh/anaconda3/envs/endogslam/lib/python3.10/site-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/home/czh/anaconda3/envs/endogslam/lib/python3.10/site-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=AlexNet_Weights.IMAGENET1K_V1`. You can also use `weights=AlexNet_Weights.DEFAULT` to get the most up-to-date weights.
+  warnings.warn(msg)
+Loading model from: /home/czh/anaconda3/envs/endogslam/lib/python3.10/site-packages/lpips/weights/v0.1/alex.pth
+Traceback (most recent call last):
+  File "/home/czh/EndoGSLAM/scripts/calc_metrics.py", line 88, in <module>
+    metrics = metric_single(args.gt, args.render)
+  File "/home/czh/EndoGSLAM/scripts/calc_metrics.py", line 29, in metric_single
+    psnr, ssim, lpips, pl, sl, ll = rgb_metrics(gt, render)
+  File "/home/czh/EndoGSLAM/utils/metrics_helper.py", line 207, in rgb_metrics
+    psnr_list = [calculate_psnr(color1[i], color2[i]) for i in range(len(color1))]
+  File "/home/czh/EndoGSLAM/utils/metrics_helper.py", line 207, in <listcomp>
+    psnr_list = [calculate_psnr(color1[i], color2[i]) for i in range(len(color1))]
+IndexError: list index out of range
+
+
+
+Average Tracking/Iteration Time: 33.02756672474875 ms
+Average Tracking/Frame Time: 0.4956999806274471 s
+Average Mapping/Iteration Time: 49.70669845850996 ms
+Average Mapping/Frame Time: 1.2433377759638666 s
+Evaluating Final Parameters ...
+100%|████████████████████████████████████████| 613/613 [00:00<00:00, 4394.81it/s]
+  1%|▌                                           | 7/613 [00:01<01:31,  6.63it/s]
+Traceback (most recent call last):
+  File "/home/czh/EndoGSLAM/scripts/main.py", line 971, in <module>
+    rgbd_slam(experiment.config)
+  File "/home/czh/EndoGSLAM/scripts/main.py", line 922, in rgbd_slam
+    eval_save(dataset, params, eval_dir, sil_thres=config['mapping']['sil_thres'],
+  File "/home/czh/EndoGSLAM/utils/eval_helpers.py", line 400, in eval_save
+    plot_rgbd_silhouette(color, depth, im, rastered_depth_viz, presence_sil_mask, diff_depth_l1,
+  File "/home/czh/EndoGSLAM/utils/eval_helpers.py", line 93, in plot_rgbd_silhouette
+    fig, axs = plt.subplots(2, 3, figsize=(fig_width, fig_height))
+  File "/home/czh/anaconda3/envs/endogslam/lib/python3.10/site-packages/matplotlib/pyplot.py", line 1455, in subplots
+    fig = figure(**fig_kw)
+  File "/home/czh/anaconda3/envs/endogslam/lib/python3.10/site-packages/matplotlib/pyplot.py", line 808, in figure
+    manager = new_figure_manager(
+  File "/home/czh/anaconda3/envs/endogslam/lib/python3.10/site-packages/matplotlib/pyplot.py", line 327, in new_figure_manager
+    return _get_backend_mod().new_figure_manager(*args, **kwargs)
+  File "/home/czh/anaconda3/envs/endogslam/lib/python3.10/site-packages/matplotlib/backend_bases.py", line 3494, in new_figure_manager
+    return cls.new_figure_manager_given_figure(num, fig)
+  File "/home/czh/anaconda3/envs/endogslam/lib/python3.10/site-packages/matplotlib/backends/_backend_tk.py", line 966, in new_figure_manager_given_figure
+    manager = cls.FigureManager(canvas, num, window)
+  File "/home/czh/anaconda3/envs/endogslam/lib/python3.10/site-packages/matplotlib/backends/_backend_tk.py", line 423, in __init__
+    self.toolbar = self._get_toolbar()
+  File "/home/czh/anaconda3/envs/endogslam/lib/python3.10/site-packages/matplotlib/backends/_backend_tk.py", line 446, in _get_toolbar
+    toolbar = NavigationToolbar2Tk(self.canvas, self.window)
+  File "/home/czh/anaconda3/envs/endogslam/lib/python3.10/site-packages/matplotlib/backends/_backend_tk.py", line 554, in __init__
+    self._buttons[text] = button = self._Button(
+  File "/home/czh/anaconda3/envs/endogslam/lib/python3.10/site-packages/matplotlib/backends/_backend_tk.py", line 680, in _Button
+    NavigationToolbar2Tk._set_image_for_button(self, b)
+  File "/home/czh/anaconda3/envs/endogslam/lib/python3.10/site-packages/matplotlib/backends/_backend_tk.py", line 659, in _set_image_for_button
+    image = ImageTk.PhotoImage(im.resize((size, size)), master=self)
+  File "/home/czh/anaconda3/envs/endogslam/lib/python3.10/site-packages/PIL/Image.py", line 2060, in resize
+    im = im.resize(size, resample, box)
+  File "/home/czh/anaconda3/envs/endogslam/lib/python3.10/site-packages/PIL/Image.py", line 2082, in resize
+    return self._new(self.im.resize(size, resample, box))
+ValueError: height and width must be > 0
+
+
+
+    print(f"Color image shape: {color.shape}")
+    print(f"Depth image shape: {depth.shape}")
+
+
+
+Used Frames for mapping at Frame 287: [263, 95, 127, 79, 'curr', 87, 247, 183, 15, 39, 'curr', 255, 207, 95, 0, 255, 135, 95, 79, 263, 223, 231, 'curr', 279, 239]
+Mapping Time Step: 287: 100%|█████████████████████████████████████| 25/25 [00:01<00:00, 20.62it/s]
+ 54%|███████████████████████████████▋                           | 288/537 [08:36<07:33,  1.82s/it]
+Tracking Time Step: 288: 100%|████████████████████████████████████| 15/15 [00:00<00:00, 31.03it/s]
+Color image shape: torch.Size([3, 540, 675])██████████████▊       | 12/15 [00:00<00:00, 30.79it/s]
+Depth image shape: torch.Size([1, 540, 675])
+
+Used Frames for mapping at Frame 288: ['curr', 111, 7, 'curr', 119, 'curr', 103, 127, 'curr', 271, 47, 223, 79, 31, 231, 39, 191, 231, 'curr', 'curr', 231, 199, 239, 'curr', 'curr']
+Mapping Time Step: 288: 100%|█████████████████████████████████████| 25/25 [00:01<00:00, 21.44it/s]
+ 54%|███████████████████████████████▊                           | 289/537 [08:38<07:23,  1.79s/it]
+Tracking Time Step: 289: 100%|████████████████████████████████████| 15/15 [00:00<00:00, 31.20it/s]
+Tracking Time Step: 289:  80%|████████████████████████████▊       | 12/15 [00:00<00:00, 31.07it/s]
+Used Frames for mapping at Frame 289: [15, 'curr', 271, 31, 271, 239, 'curr', 191, 199, 279, 199, 207, 111, 151, 135, 23, 223, 279, 263, 111, 223, 199, 271, 159, 15]
+
+
+
+
+
+
+
+print(f"Color shape: {color.shape}, Depth shape: {depth.shape}")
+print(f"Rastered color shape: {rastered_color.shape}, Rastered depth shape: {rastered_depth.shape}")
+
+
+
+
+
+
+
+
+
+/home/czh/EndoGSLAM
+/home/czh/EndoGSLAM/scripts
+/home/czh/anaconda3/envs/endogslam/lib/python310.zip
+/home/czh/anaconda3/envs/endogslam/lib/python3.10
+/home/czh/anaconda3/envs/endogslam/lib/python3.10/lib-dynload
+/home/czh/anaconda3/envs/endogslam/lib/python3.10/site-packages
+Traceback (most recent call last):
+  File "/home/czh/EndoGSLAM/scripts/main.py", line 27, in <module>
+    from utils.eval_helpers import report_progress, eval_save
+  File "/home/czh/EndoGSLAM/utils/eval_helpers.py", line 403
+    plot_rgbd_silhouette(color, depth, im, rastered_depth_viz, presence_sil_mask, diff_depth_l1,
+IndentationError: unexpected indent
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Average Tracking/Iteration Time: 32.52721135296039 ms
+Average Tracking/Frame Time: 0.48821195277421836 s
+Average Mapping/Iteration Time: 48.859932666828286 ms
+Average Mapping/Frame Time: 1.222177872222673 s
+Evaluating Final Parameters ...
+100%|█████████████████████████████████████████████████████████| 613/613 [00:00<00:00, 4600.17it/s]
+  1%|▍                                                            | 4/613 [00:00<00:18, 33.61it/s]Color shape: torch.Size([3, 540, 675]), Depth shape: torch.Size([1, 540, 675])
+  1%|▋                                                            | 7/613 [00:00<00:25, 24.11it/s]
+Traceback (most recent call last):
+  File "/home/czh/EndoGSLAM/scripts/main.py", line 973, in <module>
+    rgbd_slam(experiment.config)
+  File "/home/czh/EndoGSLAM/scripts/main.py", line 924, in rgbd_slam
+    eval_save(dataset, params, eval_dir, sil_thres=config['mapping']['sil_thres'],
+  File "/home/czh/EndoGSLAM/utils/eval_helpers.py", line 401, in eval_save
+    print(f"Rastered color shape: {rastered_color.shape}, Rastered depth shape: {rastered_depth.shape}")
+NameError: name 'rastered_color' is not defined. Did you mean: 'rastered_depth'?
+
+
+
+
+
+
+
+Evaluating Final Parameters ...
+100%|█████████████████████████████████████████████████████████| 613/613 [00:00<00:00, 3433.21it/s]
+  1%|▍                                                            | 4/613 [00:00<00:19, 31.04it/s]Aspect ratio:1.25
+  1%|▋                                                            | 7/613 [00:00<00:51, 11.72it/s]
+Traceback (most recent call last):
+  File "/home/czh/EndoGSLAM/scripts/main.py", line 973, in <module>
+    rgbd_slam(experiment.config)
+  File "/home/czh/EndoGSLAM/scripts/main.py", line 924, in rgbd_slam
+    eval_save(dataset, params, eval_dir, sil_thres=config['mapping']['sil_thres'],
+  File "/home/czh/EndoGSLAM/utils/eval_helpers.py", line 401, in eval_save
+    plot_rgbd_silhouette(color, depth, im, rastered_depth_viz, presence_sil_mask, diff_depth_l1,
+  File "/home/czh/EndoGSLAM/utils/eval_helpers.py", line 94, in plot_rgbd_silhouette
+    fig, axs = plt.subplots(2, 3, figsize=(fig_width, fig_height))
+  File "/home/czh/anaconda3/envs/endogslam/lib/python3.10/site-packages/matplotlib/pyplot.py", line 1455, in subplots
+    fig = figure(**fig_kw)
+  File "/home/czh/anaconda3/envs/endogslam/lib/python3.10/site-packages/matplotlib/pyplot.py", line 808, in figure
+    manager = new_figure_manager(
+  File "/home/czh/anaconda3/envs/endogslam/lib/python3.10/site-packages/matplotlib/pyplot.py", line 327, in new_figure_manager
+    return _get_backend_mod().new_figure_manager(*args, **kwargs)
+  File "/home/czh/anaconda3/envs/endogslam/lib/python3.10/site-packages/matplotlib/backend_bases.py", line 3494, in new_figure_manager
+    return cls.new_figure_manager_given_figure(num, fig)
+  File "/home/czh/anaconda3/envs/endogslam/lib/python3.10/site-packages/matplotlib/backends/_backend_tk.py", line 966, in new_figure_manager_given_figure
+    manager = cls.FigureManager(canvas, num, window)
+  File "/home/czh/anaconda3/envs/endogslam/lib/python3.10/site-packages/matplotlib/backends/_backend_tk.py", line 423, in __init__
+    self.toolbar = self._get_toolbar()
+  File "/home/czh/anaconda3/envs/endogslam/lib/python3.10/site-packages/matplotlib/backends/_backend_tk.py", line 446, in _get_toolbar
+    toolbar = NavigationToolbar2Tk(self.canvas, self.window)
+  File "/home/czh/anaconda3/envs/endogslam/lib/python3.10/site-packages/matplotlib/backends/_backend_tk.py", line 554, in __init__
+    self._buttons[text] = button = self._Button(
+  File "/home/czh/anaconda3/envs/endogslam/lib/python3.10/site-packages/matplotlib/backends/_backend_tk.py", line 680, in _Button
+    NavigationToolbar2Tk._set_image_for_button(self, b)
+  File "/home/czh/anaconda3/envs/endogslam/lib/python3.10/site-packages/matplotlib/backends/_backend_tk.py", line 659, in _set_image_for_button
+    image = ImageTk.PhotoImage(im.resize((size, size)), master=self)
+  File "/home/czh/anaconda3/envs/endogslam/lib/python3.10/site-packages/PIL/Image.py", line 2060, in resize
+    im = im.resize(size, resample, box)
+  File "/home/czh/anaconda3/envs/endogslam/lib/python3.10/site-packages/PIL/Image.py", line 2082, in resize
+    return self._new(self.im.resize(size, resample, box))
+ValueError: height and width must be > 0
+
+import matplotlib
+matplotlib.use('Agg') 
+
+
+
+
+
+
+
+
+
+Traceback (most recent call last):
+  File "/home/czh/EndoGSLAM/scripts/main.py", line 28, in <module>
+    from utils.keyframe_selection import keyframe_selection_overlap, keyframe_selection_distance
+ImportError: cannot import name 'keyframe_selection_distance' from 'utils.keyframe_selection' (/home/czh/EndoGSLAM/utils/keyframe_selection.py)
+
+
+
+
+
+
+
+
+
+
+
+Traceback (most recent call last):                                         | 0/50 [00:00<?, ?it/s]
+  File "/home/czh/EndoGSLAM/scripts/main.py", line 973, in <module>
+    rgbd_slam(experiment.config)
+  File "/home/czh/EndoGSLAM/scripts/main.py", line 802, in rgbd_slam
+    actural_keyframe_ids = keyframe_selection_distance(time_idx, curr_position, keyframe_list, config['distance_current_frame_prob'], num_iters_mapping)
+TypeError: keyframe_selection_distance() missing 1 required positional argument: 'n_samples'
+Mapping Time Step: 1:   0%|                                                | 0/50 [00:00<?, ?it/s]
+
+
+
+curr_position = params['cam_trans'][..., time_idx].detach().cpu()
+
+
+prev_position = params['cam_trans'][..., time_idx - 1].detach().cpu() if time_idx > 0 else curr_position
+
+
+
+
+
+
+Traceback (most recent call last):                                         | 0/50 [00:00<?, ?it/s]
+  File "/home/czh/EndoGSLAM/scripts/main.py", line 974, in <module>
+    rgbd_slam(experiment.config)
+  File "/home/czh/EndoGSLAM/scripts/main.py", line 803, in rgbd_slam
+    actural_keyframe_ids = keyframe_selection_distance(time_idx, curr_position, prev_position, keyframe_list, config['distance_current_frame_prob'], num_iters_mapping)
+  File "/home/czh/EndoGSLAM/utils/keyframe_selection.py", line 125, in keyframe_selection_distance
+    distance = np.linalg.norm(camera_position - curr_position)
+TypeError: unsupported operand type(s) for -: 'numpy.ndarray' and 'Tensor'
+Mapping Time Step: 1:   0%|                                                | 0/50 [00:00<?, ?it/s]
+
+
+
+
+
+
+
+import numpy as np
+import torch
+
+def keyframe_selection_distance(
+    time_idx, curr_position, prev_position, keyframe_list, 
+    distance_current_frame_prob, n_samples):
+    """
+    选择关键帧，并根据距离、时间和运动方向计算概率。
+    """
+    distances = []
+    time_laps = []
+    curr_shift = torch.norm(curr_position - prev_position).item()
+
+    for keyframe in keyframe_list:
+        est_w2c = keyframe['est_w2c'].detach().cpu().numpy()
+        camera_position = est_w2c[:3, 3]
+
+        # 将 camera_position 转换为 Tensor
+        camera_position_tensor = torch.from_numpy(camera_position).to(curr_position.device)
+        
+        # 计算当前帧与关键帧之间的距离
+        distance = torch.norm(camera_position_tensor - curr_position).item()
+        time_lap = time_idx - keyframe['id']
+
+        distances.append(distance)
+        time_laps.append(time_lap)
+
+    # 使用距离和时间计算概率
+    dis2prob = lambda x, scaler: np.log2(1 + scaler / (x + scaler / 5))
+    dis_prob = [
+        dis2prob(d, curr_shift) + dis2prob(t, time_idx) 
+        for d, t in zip(distances, time_laps)
+    ]
+    
+    sum_prob = sum(dis_prob) / (1 - distance_current_frame_prob)
+    norm_dis_prob = [p / sum_prob for p in dis_prob]
+    norm_dis_prob.append(distance_current_frame_prob)
+
+    # 计算 CDF 并采样
+    cdf = np.cumsum(norm_dis_prob)
+    samples = np.random.rand(n_samples)
+    sample_indices = np.searchsorted(cdf, samples)
+
+    return sample_indices
+

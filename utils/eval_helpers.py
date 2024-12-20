@@ -5,6 +5,8 @@ import torch
 import torch.nn.functional as F
 from tqdm import tqdm
 import numpy as np
+import matplotlib
+matplotlib.use('Agg') 
 import matplotlib.pyplot as plt
 from datasets.gradslam_datasets.geometryutils import relative_transformation
 from utils.recon_helpers import setup_camera, energy_mask
