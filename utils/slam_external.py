@@ -41,6 +41,23 @@ def build_rotation(q):
     return rot
 
 
+# zyk
+def matrix_to_rot(mat: torch.Tensor):
+    assert mat.ndim == 2
+
+    trace = torch.trace(mat)
+    w = torch.sqrt(1 + trace) / 2
+
+    x = (mat[2, 1] - mat[1, 2]) / (4 * w)
+    y = (mat[0, 2] - mat[2, 0]) / (4 * w)
+    z = (mat[1, 0] - mat[0, 1]) / (4 * w)
+
+    quat = torch.tensor([w, x, y, z])
+    quat = quat / torch.norm(quat)
+
+    return quat
+
+
 def calc_mse(img1, img2):
     return ((img1 - img2) ** 2).view(img1.shape[0], -1).mean(1, keepdim=True)
 

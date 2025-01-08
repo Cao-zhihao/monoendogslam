@@ -4,6 +4,7 @@
 
 import os, sys, glob
 os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"
+IS_DEBUG = getattr(sys, 'gettrace', None) is not None and sys.gettrace() is not None
 import numpy as np
 import cv2, yaml    # pip install opencv-python==4.9.0.80
 import pycolmap     # conda install -c conda-forge pycolmap, [Note: please install PyTorch first]
@@ -76,8 +77,10 @@ class CoarseInitializer():
         # processing
         if img.ndim == 3:
             if img.shape[0] == 3:
-                img = img.permute(1, 2, 0)
-            img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+                img = img.transpose(1, 2, 0)
+            img = img.astype(np.uint8)
+            # img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+            img = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
 
         # downsampling
         img = cv2.resize(img, None, fx=self.scale, fy=self.scale, interpolation=cv2.INTER_AREA)
@@ -203,7 +206,9 @@ class CoarseInitializer():
             self.frame_window.pop(0)
 
         self.frame_window.append(frame_data)
-        rst = None
+            
+        pose = np.eye(4, dtype=np.float32)
+        points = None
 
         # 3. tracking
         if len(self.frame_window) >= 2:
@@ -215,7 +220,6 @@ class CoarseInitializer():
             points, points_mask = self.sparse_reconstruction(R, T, matched1, matched2)
             
             # to Pose
-            pose = np.eye(4, dtype=np.float32)
             pose[:3, :3] = R
             pose[:3, -1] = T.squeeze()
             if points is None: points = frame1.points
@@ -231,8 +235,6 @@ class CoarseInitializer():
             frame2.relative_pose = pose
             frame2.points = points
 
-            rst = [pose, points]
-
             if IS_DEBUG:
                 points1 = [cv2.KeyPoint(x=m1[0], y=m1[1], size=1) for m1 in matched1]
                 points2 = [cv2.KeyPoint(x=m2[0], y=m2[1], size=1) for m2 in matched2]
@@ -244,7 +246,7 @@ class CoarseInitializer():
         if IS_DEBUG:
             cv2.destroyAllWindows()
 
-        return rst
+        return pose, points
 
 
 
@@ -327,8 +329,8 @@ def calcError_Pose(Pose1, Pose2):
     return calcError_RT(R1, T1, R2, T2)
 
 def evalError():
-    color_dir = R"D:\2_SIAT\2_code\python\3d\EndoGSLAM\data\EndoOurs\color"
-    pose_file = R"D:\2_SIAT\2_code\python\3d\EndoGSLAM\data\EndoOurs\pose.txt"
+    color_dir = R"D:\2_SIAT\2_code\python\3d\monoendogslam\data\EndoOurs\color"
+    pose_file = R"D:\2_SIAT\2_code\python\3d\monoendogslam\data\EndoOurs\pose.txt"
 
     # all color files
     filenames = glob.glob(os.path.join(color_dir, "*.png"))
@@ -459,7 +461,6 @@ def plotPoses():
 
 if __name__ == "__main__":
 
-    IS_DEBUG = getattr(sys, 'gettrace', None) is not None and sys.gettrace() is not None
 
     mode = cv2.IMREAD_COLOR
     mode = cv2.IMREAD_GRAYSCALE

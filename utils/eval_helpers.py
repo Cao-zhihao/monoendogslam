@@ -1,6 +1,7 @@
 import cv2
 from PIL import Image
 import os
+os.environ['KMP_DUPLICATE_LIB_OK'] = 'TRUE'
 import torch
 import torch.nn.functional as F
 from tqdm import tqdm
@@ -18,7 +19,7 @@ from diff_gaussian_rasterization import GaussianRasterizer as Renderer
 from pytorch_msssim import ms_ssim
 from torchmetrics.image.lpip import LearnedPerceptualImagePatchSimilarity
 from utils.time_helper import Timer
-loss_fn_alex = LearnedPerceptualImagePatchSimilarity(net_type='alex', normalize=True).cuda()
+# loss_fn_alex = LearnedPerceptualImagePatchSimilarity(net_type='alex', normalize=True).cuda()
 
 def align(model, data):
     """Align two trajectories using the method of Horn (closed-form).
