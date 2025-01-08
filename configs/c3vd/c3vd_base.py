@@ -21,7 +21,6 @@ try:
 except KeyError:
     scene_name = "sigmoid_t3_a"
 
-fine_stage_iters = 10
 tracking_iters = 5
 mapping_iters = 5
 keyframe_every = 8

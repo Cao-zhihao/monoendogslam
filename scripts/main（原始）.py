@@ -973,3 +973,29 @@ if __name__ == "__main__":
     rgbd_slam(experiment.config)
     
     plot_video(os.path.join(results_dir, 'eval', 'plots'), os.path.join('./experiments/', experiment.group_name, experiment.scene_name, 'keyframes'))
+
+
+
+# ------- pipeline -------
+# 1. 	tracking resolution, maybe low-res [False now]
+# 2. 	initial came pose
+# 3. 	tracking:
+# 	optimizer
+# 	for iteration:
+# 		loss
+# 		backward
+# 		step forward
+# 4. 	mapping:
+#  	Densify resolution, maybe high-res [False now]
+# 5.  add new GS
+# 6.	optimizer
+# 	for iteration:
+# 		select a keyframe
+# 		loss
+# 		backward
+# 		prune GS
+# 		step forward
+# 7. add keyframe
+		
+
+
